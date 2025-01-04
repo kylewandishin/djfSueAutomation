@@ -1,0 +1,4 @@
+#!/bin/sh
+
+bunx lint-staged --concurrent false
+bun run precommit
