@@ -4,12 +4,14 @@ import type BrowserClient from '../BrowserClient/BrowserClient';
 import sleep, { randSleep } from '../util/sleep';
 import type { Patient } from '../SheetsHandle/SheetHandle';
 import { formatPhoneNumber } from '../util/standardize';
+import { config } from 'dotenv';
 
 export default class AsanaHandle {
   private browser: BrowserClient;
   #BaseURL = 'https://app.asana.com/';
 
   public constructor(browser: BrowserClient) {
+    config();
     this.browser = browser;
   }
 
@@ -40,6 +42,9 @@ export default class AsanaHandle {
       `${this.#BaseURL}${process.env.ASANA_TEMPLATE!}`,
     );
 
+    console.log(patient);
+    return;
+
     const optionsSelector =
       '#TaskPrintView > div.TaskPaneToolbar.TaskPane-header.Stack.Stack--align-center.Stack--direction-row.Stack--display-block.Stack--justify-space-between > div.HighlightSol.HighlightSol--buildingBlock.IconButtonThemeablePresentation--isEnabled.IconButtonThemeablePresentation.IconButtonThemeablePresentation--medium.HighlightSol.HighlightSol--core.SubtleIconButton--standardTheme.SubtleIconButton.TaskPaneExtraActionsButton.TaskPaneToolbar-button.Stack.Stack--align-center.Stack--direction-row.Stack--display-inline.Stack--justify-center > svg';
     await this.browser.waitForSelector(optionsSelector);
@@ -59,11 +64,17 @@ export default class AsanaHandle {
     const collabB = await this.browser.getByText('Collaborators', 1);
     await collabB.click();
 
+    // await randSleep(500, 1000);
+    // const duedateB = await this.browser.getByText('Due date', 1);
+    // await duedateB.click();
+
     const fullName = `${patient.firstName} ${patient.lastName}`;
     const taskNameSelector =
       'body > div:nth-child(14) > div > div > div.ModalBuffer--responsive.ModalBuffer.Stack.Stack--align-stretch.Stack--direction-column.Stack--display-block.Stack--justify-space-between > div.ModalBuffer-content.Stack.Stack--align-stretch.Stack--direction-row.Stack--display-block.Stack--justify-center > div > div > div > div.DuplicateObjectDialogStructure > div.Scrollable--withCompositingLayer.Scrollable.Scrollable--vertical.DuplicateObjectDialogStructure-formContents > div.FormRowStructure--labelPlacementTop.FormRowStructure.DuplicateObjectDialogStructure-name > div.FormRowStructure-contents > input';
     await this.browser.waitForSelector(taskNameSelector);
     await this.browser.fill(taskNameSelector, fullName);
+
+    // submit button for duplicate task
 
     const submitSelector =
       'body > div:nth-child(14) > div > div > div.ModalBuffer--responsive.ModalBuffer.Stack.Stack--align-stretch.Stack--direction-column.Stack--display-block.Stack--justify-space-between > div.ModalBuffer-content.Stack.Stack--align-stretch.Stack--direction-row.Stack--display-block.Stack--justify-center > div > div > div > div.DuplicateObjectDialogStructure > div.DuplicateObjectDialogStructure-footer > div > div';
@@ -95,7 +106,7 @@ export default class AsanaHandle {
   private async populateField(selector: string, value: string): Promise<void> {
     await this.browser.waitForSelector(selector);
     await this.browser.fill(selector, value);
-    await sleep(200);
+    await sleep(400);
   }
 
   private async populateEnumField(
@@ -109,7 +120,7 @@ export default class AsanaHandle {
     await sleep(400);
     const pronouns = await this.browser.getByText(value);
     await pronouns.click();
-    await sleep(200);
+    await sleep(400);
   }
 
   private async populateTask(patient: Patient): Promise<void> {

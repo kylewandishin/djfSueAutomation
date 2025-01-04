@@ -8,11 +8,13 @@ import BrowserClient from '../BrowserClient/BrowserClient';
 import SheetHandle from '../SheetsHandle/SheetHandle';
 import AsanaHandle from '../AsanaHandle/AsanaHandle';
 import sleep from '../util/sleep';
+import { config } from 'dotenv';
 // import sleep from '../util/sleep';
 
 export default class RunHandle {
   public static async run(): Promise<void> {
     /* BEGIN_CODE */
+    config();
     const browser = await BrowserClient.init();
     const asanaHandle = new AsanaHandle(browser);
     const sheetHandle = new SheetHandle();
