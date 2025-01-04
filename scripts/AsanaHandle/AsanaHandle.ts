@@ -43,6 +43,8 @@ export default class AsanaHandle {
     );
 
     console.log(patient);
+    console.log(formatPhoneNumber(patient.cellPhone));
+    console.log(formatPhoneNumber(patient.careTakerPhone));
     return;
 
     const optionsSelector =
@@ -147,7 +149,8 @@ export default class AsanaHandle {
     await this.populateEnumField(pronounsSelector, patient.pronouns);
 
     const phone = '#CustomPropertyRow-field935876907465267';
-    await this.populateField(phone, formatPhoneNumber(patient.cellPhone));
+    const phoneValue = formatPhoneNumber(patient.cellPhone);
+    await this.populateField(phone, phoneValue);
 
     const email = '#CustomPropertyRow-field1206289516748371';
     await this.populateField(email, patient.email);
@@ -174,7 +177,8 @@ export default class AsanaHandle {
     await this.populateField(cgRelation, patient.careTakerRelationship);
 
     const cgPhone = '#CustomPropertyRow-field1209062685357763';
-    await this.populateField(cgPhone, patient.careTakerPhone);
+    const cgPhoneValue = formatPhoneNumber(patient.careTakerPhone);
+    await this.populateField(cgPhone, cgPhoneValue);
 
     const cgContact = '#CustomPropertyRow-field1206289516765366';
     await this.populateField(cgContact, patient.careTakerEmail);

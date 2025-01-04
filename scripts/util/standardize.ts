@@ -1,3 +1,5 @@
+// import { count } from "console";
+
 export function formatPhoneNumber(phone: string): string {
   // Remove leading international prefixes (e.g., +, 00) and non-digit characters
   phone = phone.replace(/^\+|^00/, '');
