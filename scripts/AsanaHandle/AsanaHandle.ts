@@ -43,9 +43,7 @@ export default class AsanaHandle {
     );
 
     console.log(patient);
-    console.log(formatPhoneNumber(patient.cellPhone));
-    console.log(formatPhoneNumber(patient.careTakerPhone));
-    return;
+    //return;
 
     const optionsSelector =
       '#TaskPrintView > div.TaskPaneToolbar.TaskPane-header.Stack.Stack--align-center.Stack--direction-row.Stack--display-block.Stack--justify-space-between > div.HighlightSol.HighlightSol--buildingBlock.IconButtonThemeablePresentation--isEnabled.IconButtonThemeablePresentation.IconButtonThemeablePresentation--medium.HighlightSol.HighlightSol--core.SubtleIconButton--standardTheme.SubtleIconButton.TaskPaneExtraActionsButton.TaskPaneToolbar-button.Stack.Stack--align-center.Stack--direction-row.Stack--display-inline.Stack--justify-center > svg';
@@ -61,20 +59,26 @@ export default class AsanaHandle {
     await randSleep(500, 1000);
     const assigneeB = await this.browser.getByText('Assignee', 1);
     await assigneeB.click();
+    console.log('updated assignee');
 
     await randSleep(500, 1000);
     const collabB = await this.browser.getByText('Collaborators', 1);
     await collabB.click();
+    console.log('updated collaborators');
 
-    // await randSleep(500, 1000);
+    //await randSleep(500, 1000);
     // const duedateB = await this.browser.getByText('Due date', 1);
     // await duedateB.click();
 
     const fullName = `${patient.firstName} ${patient.lastName}`;
+    console.log('got full name');
     const taskNameSelector =
       'body > div:nth-child(14) > div > div > div.ModalBuffer--responsive.ModalBuffer.Stack.Stack--align-stretch.Stack--direction-column.Stack--display-block.Stack--justify-space-between > div.ModalBuffer-content.Stack.Stack--align-stretch.Stack--direction-row.Stack--display-block.Stack--justify-center > div > div > div > div.DuplicateObjectDialogStructure > div.Scrollable--withCompositingLayer.Scrollable.Scrollable--vertical.DuplicateObjectDialogStructure-formContents > div.FormRowStructure--labelPlacementTop.FormRowStructure.DuplicateObjectDialogStructure-name > div.FormRowStructure-contents > input';
+    console.log('task name selector');
     await this.browser.waitForSelector(taskNameSelector);
+    console.log('selected task name field');
     await this.browser.fill(taskNameSelector, fullName);
+    console.log('filled in fullname');
 
     // submit button for duplicate task
 
@@ -82,6 +86,7 @@ export default class AsanaHandle {
       'body > div:nth-child(14) > div > div > div.ModalBuffer--responsive.ModalBuffer.Stack.Stack--align-stretch.Stack--direction-column.Stack--display-block.Stack--justify-space-between > div.ModalBuffer-content.Stack.Stack--align-stretch.Stack--direction-row.Stack--display-block.Stack--justify-center > div > div > div > div.DuplicateObjectDialogStructure > div.DuplicateObjectDialogStructure-footer > div > div';
     await this.browser.waitForSelector(submitSelector);
     await this.browser.click(submitSelector);
+    console.log('clicked submit selector');
 
     await this.browser.waitForSelector(
       '#TaskPrintView > div.TaskPaneToolbar.TaskPane-header.Stack.Stack--align-center.Stack--direction-row.Stack--display-block.Stack--justify-space-between > div:nth-child(11)',
@@ -90,6 +95,8 @@ export default class AsanaHandle {
     await this.browser.click(
       '#TaskPrintView > div.TaskPaneToolbar.TaskPane-header.Stack.Stack--align-center.Stack--direction-row.Stack--display-block.Stack--justify-space-between > div:nth-child(11)',
     );
+    console.log('clicked exit button');
+
     await randSleep(300, 500);
 
     await this.browser.click(
