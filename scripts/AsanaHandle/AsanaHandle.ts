@@ -56,34 +56,57 @@ export default class AsanaHandle {
     const element = await this.browser.getByText('Duplicate task', 1);
     await element.click();
 
-    await randSleep(500, 1000);
-    const assigneeB = await this.browser.getByText('Assignee', 1);
-    await assigneeB.click();
-    console.log('updated assignee');
-
-    await randSleep(500, 1000);
-    const collabB = await this.browser.getByText('Collaborators', 1);
-    await collabB.click();
-    console.log('updated collaborators');
-
-    //await randSleep(500, 1000);
-    // const duedateB = await this.browser.getByText('Due date', 1);
-    // await duedateB.click();
-
     const fullName = `${patient.firstName} ${patient.lastName}`;
     console.log('got full name');
-    const taskNameSelector =
-      'body > div:nth-child(14) > div > div > div.ModalBuffer--responsive.ModalBuffer.Stack.Stack--align-stretch.Stack--direction-column.Stack--display-block.Stack--justify-space-between > div.ModalBuffer-content.Stack.Stack--align-stretch.Stack--direction-row.Stack--display-block.Stack--justify-center > div > div > div > div.DuplicateObjectDialogStructure > div.Scrollable--withCompositingLayer.Scrollable.Scrollable--vertical.DuplicateObjectDialogStructure-formContents > div.FormRowStructure--labelPlacementTop.FormRowStructure.DuplicateObjectDialogStructure-name > div.FormRowStructure-contents > input';
+    const taskNameSelector = 'div.DuplicateObjectDialogStructure-name input';
+    //const taskNameSelector =
+    //  'body > div:nth-child(14) > div > div > div.ModalBuffer--responsive.ModalBuffer.Stack.Stack--align-stretch.Stack--direction-column.Stack--display-block.Stack--justify-space-between > div.ModalBuffer-content.Stack.Stack--align-stretch.Stack--direction-row.Stack--display-block.Stack--justify-center > div > div > div > div.DuplicateObjectDialogStructure > div.Scrollable--withCompositingLayer.Scrollable.Scrollable--vertical.DuplicateObjectDialogStructure-formContents > div.FormRowStructure--labelPlacementTop.FormRowStructure.DuplicateObjectDialogStructure-name > div.FormRowStructure-contents > input';
     console.log('task name selector');
     await this.browser.waitForSelector(taskNameSelector);
     console.log('selected task name field');
     await this.browser.fill(taskNameSelector, fullName);
     console.log('filled in fullname');
 
-    // submit button for duplicate task
+    //await randSleep(500, 1000);
+    //const assigneeB = await this.browser.getByText('Assignee', 1);
+    //await assigneeB.click();
+    //console.log('updated assignee');
 
+    //await randSleep(500, 1000);
+    //const collabB = await this.browser.getByText('Collaborators', 1);
+    //await collabB.click();
+    //console.log('updated collaborators');
+
+    //await randSleep(500, 1000);
+    //const duedateB = await this.browser.getByText('Due date', 1);
+    //console.log('found due date');
+    //await duedateB.click();
+    //console.log('clicked due date');
+    //await randSleep(500, 1000);
+
+    const assigneeSelector =
+      'div.FormRowStructure-contents > div > div:nth-of-type(2) span';
+    await this.browser.waitForSelector(assigneeSelector);
+    await this.browser.click(assigneeSelector);
+    console.log('clicked due date');
+
+    const collaboratorsSelector =
+      'div.FormRowStructure-contents > div > div:nth-of-type(6) span';
+    await this.browser.waitForSelector(collaboratorsSelector);
+    await this.browser.click(collaboratorsSelector);
+    console.log('clicked due date');
+
+    // Alternate click for Due Date
+    const dueDateSelector =
+      'div.FormRowStructure-contents > div > div:nth-of-type(8) span';
+    await this.browser.waitForSelector(dueDateSelector);
+    await this.browser.click(dueDateSelector);
+    console.log('clicked due date');
+
+    // submit button for duplicate task
     const submitSelector =
-      'body > div:nth-child(14) > div > div > div.ModalBuffer--responsive.ModalBuffer.Stack.Stack--align-stretch.Stack--direction-column.Stack--display-block.Stack--justify-space-between > div.ModalBuffer-content.Stack.Stack--align-stretch.Stack--direction-row.Stack--display-block.Stack--justify-center > div > div > div > div.DuplicateObjectDialogStructure > div.DuplicateObjectDialogStructure-footer > div > div';
+      'div.DuplicateObjectDialogStructure-footer > div > div';
+    //  'body > div:nth-child(14) > div > div > div.ModalBuffer--responsive.ModalBuffer.Stack.Stack--align-stretch.Stack--direction-column.Stack--display-block.Stack--justify-space-between > div.ModalBuffer-content.Stack.Stack--align-stretch.Stack--direction-row.Stack--display-block.Stack--justify-center > div > div > div > div.DuplicateObjectDialogStructure > div.DuplicateObjectDialogStructure-footer > div > div';
     await this.browser.waitForSelector(submitSelector);
     await this.browser.click(submitSelector);
     console.log('clicked submit selector');
@@ -109,6 +132,7 @@ export default class AsanaHandle {
     await this.browser.click(
       '#asana_main_page > div.FullWidthPageStructureWithDetailsOverlay > div.FullWidthPageStructureWithDetailsOverlay-fullWidth > div.FullWidthPageStructureWithDetailsOverlay-mainContent > div.ProjectPage > div.ProjectPage-list > div > div.SpreadsheetGridScroller-container > div.Scrollable--withCompositingLayer.Scrollable.Scrollable--vertical.SpreadsheetGridScroller-verticalScroller > div > div.SpreadsheetGridContents--canScrollHorizontally.SpreadsheetGridContents.SpreadsheetPotGridContents--hasComplete.SpreadsheetPotGridContents > div:nth-child(1) > div > div > div > div > div > div > div:nth-child(2) > div > div > div > div > div.SpreadsheetRow-stickyCell > div > div.SpreadsheetGridTaskNameAndDetailsCellGroup-detailsButtonClickArea',
     );
+    console.log('populate patient details');
     await this.populateTask(patient);
   }
 
@@ -151,20 +175,28 @@ export default class AsanaHandle {
 
     const bodSelector = '#CustomPropertyRow-field1209065162212480';
     await this.populateField(bodSelector, patient.dateOfBirth);
+    console.log('added DoB');
 
     const pronounsSelector = '#CustomPropertyEnumOptionsMultiPickerInput';
+    //const pronounsSelector = 'div:nth-of-type(8) div.LabeledRowStructure-right > div > div > div > div';
+    console.log(patient.pronouns);
     await this.populateEnumField(pronounsSelector, patient.pronouns);
+    await sleep(200);
+    console.log('added pronouns');
 
     const phone = '#CustomPropertyRow-field935876907465267';
     const phoneValue = formatPhoneNumber(patient.cellPhone);
     await this.populateField(phone, phoneValue);
+    console.log('added cellphone');
 
     const email = '#CustomPropertyRow-field1206289516748371';
     await this.populateField(email, patient.email);
+    console.log('added email');
 
     const address = '#CustomPropertyRow-field1206289516748367';
     const structuredAddress = `${patient.address1}${patient.address2 ? ` ${patient.address2}` : ''}, ${patient.city}, ${patient.state}, ${patient.zip}`;
     await this.populateField(address, structuredAddress);
+    console.log('added address');
 
     const preferedContactMethod = '#CustomPropertyRow-field935876907465261';
     await this.browser.click(preferedContactMethod);
@@ -174,26 +206,37 @@ export default class AsanaHandle {
       await sleep(200);
     }
     await this.browser.pressKey('Enter');
+    console.log('added contact method');
 
     // console.log(`|${await contactMethod.innerHTML()}|${patient.preferedContactMethod}|${}`);
 
     const cgName = '#CustomPropertyRow-field1206289516748375';
     await this.populateField(cgName, patient.careTakerName);
+    console.log('cg name');
 
     const cgRelation = '#CustomPropertyRow-field1206289516765353';
     await this.populateField(cgRelation, patient.careTakerRelationship);
+    console.log('cg relationship');
 
     const cgPhone = '#CustomPropertyRow-field1209062685357763';
     const cgPhoneValue = formatPhoneNumber(patient.careTakerPhone);
     await this.populateField(cgPhone, cgPhoneValue);
+    console.log('cg phone');
 
     const cgContact = '#CustomPropertyRow-field1206289516765366';
     await this.populateField(cgContact, patient.careTakerEmail);
+    console.log('cg email');
 
     const diagnosis = '#CustomPropertyRow-field1206289516765370';
     await this.populateField(diagnosis, patient.diagnosis);
+    console.log('diagnosis');
 
     const treatmentHospital = '#CustomPropertyRow-field1206289516765374';
     await this.populateField(treatmentHospital, patient.treatmentHospital);
+    await sleep(200);
+
+    //Need to click outside of the last field to save the data
+    await this.browser.click(focus);
+    console.log('Hospital');
   }
 }
