@@ -116,7 +116,7 @@ export default class AsanaHandle {
     await randSleep(300, 500);
     await (await this.browser.getByText('Last modified on')).click();
 
-    await sleep(8000);
+    await sleep(4000);
     await this.browser.click(
       '#asana_main_page > div.FullWidthPageStructureWithDetailsOverlay > div.FullWidthPageStructureWithDetailsOverlay-fullWidth > div.FullWidthPageStructureWithDetailsOverlay-mainContent > div.ProjectPage > div.ProjectPage-list > div > div.SpreadsheetGridScroller-container > div.Scrollable--withCompositingLayer.Scrollable.Scrollable--vertical.SpreadsheetGridScroller-verticalScroller > div > div.SpreadsheetGridContents--canScrollHorizontally.SpreadsheetGridContents.SpreadsheetPotGridContents--hasComplete.SpreadsheetPotGridContents > div:nth-child(1) > div > div > div > div > div > div > div:nth-child(2) > div > div > div > div > div.SpreadsheetRow-stickyCell > div > div.SpreadsheetGridTaskNameAndDetailsCellGroup-detailsButtonClickArea',
     );
@@ -136,8 +136,8 @@ export default class AsanaHandle {
     const pronounsSelector = selector;
     await this.browser.waitForSelector(pronounsSelector);
     await this.browser.click(pronounsSelector);
-
     await sleep(400);
+
     const pronouns = await this.browser.getByText(value);
     await pronouns.click();
     await sleep(400);
@@ -149,6 +149,7 @@ export default class AsanaHandle {
     await this.browser.waitForSelector(focus);
     await this.browser.click(focus);
     await this.browser.scrollIntoView(focus);
+    await sleep(400);
 
     const expand =
       '#TaskPrintView > div.UploadDropTargetAttachmentWrappingTextEditor.TaskPaneBody-attachmentDropTarget > div.DynamicBorderScrollable.DynamicBorderScrollable--canScrollUp.DynamicBorderScrollable--canScrollDown.TaskPaneBody--scrollable > div > div > div.TaskPaneBody-main.Stack.Stack--align-stretch.Stack--direction-column.Stack--display-block.Stack--justify-start > div.TaskPane-premiumFeaturesSection > div > div.TaskPaneFields-customFieldTables > div > div.LabeledRowStructure-right.Stack.Stack--align-stretch.Stack--direction-row.Stack--display-block.Stack--justify-start > div > div > div > div.TaskPaneFields-showMoreCustomFieldsContainer > span > span';
@@ -159,34 +160,39 @@ export default class AsanaHandle {
     if ((await holdOn?.innerText())?.toLowerCase().includes('show')) {
       await this.browser.click(expand);
     }
+    await sleep(400);
 
     const bodSelector = '#CustomPropertyRow-field1209065162212480';
     await this.populateField(bodSelector, patient.dateOfBirth);
+    await sleep(400);
 
     //const pronounsSelector = '#CustomPropertyEnumOptionsMultiPickerInput';
     //const pronounsSelector = 'div:nth-of-type(8) div.LabeledRowStructure-right > div > div > div > div';
     const pronounsSelector =
       'div.TaskPaneFields-customFieldTables div:nth-of-type(7) div.LabeledRowStructure-right > div > div > div > div';
     await this.populateEnumField(pronounsSelector, patient.pronouns);
-    await sleep(200);
+    await sleep(400);
 
     const phone = '#CustomPropertyRow-field935876907465267';
     const phoneValue = formatPhoneNumber(patient.cellPhone);
     await this.populateField(phone, phoneValue);
+    await sleep(400);
 
     const email = '#CustomPropertyRow-field1206289516748371';
     await this.populateField(email, patient.email);
+    await sleep(400);
 
     const address = '#CustomPropertyRow-field1206289516748367';
     const structuredAddress = `${patient.address1}${patient.address2 ? ` ${patient.address2}` : ''}, ${patient.city}, ${patient.state}, ${patient.zip}`;
     await this.populateField(address, structuredAddress);
+    await sleep(400);
 
     const preferedContactMethod = '#CustomPropertyRow-field935876907465261';
     await this.browser.click(preferedContactMethod);
-    await sleep(200);
+    await sleep(400);
     for (let i = 0; i < 3; i++) {
       await this.browser.pressKey(patient.preferedContactMethod[i]);
-      await sleep(200);
+      await sleep(400);
     }
     await this.browser.pressKey('Enter');
 
@@ -194,23 +200,28 @@ export default class AsanaHandle {
 
     const cgName = '#CustomPropertyRow-field1206289516748375';
     await this.populateField(cgName, patient.careTakerName);
+    await sleep(400);
 
     const cgRelation = '#CustomPropertyRow-field1206289516765353';
     await this.populateField(cgRelation, patient.careTakerRelationship);
+    await sleep(400);
 
     const cgPhone = '#CustomPropertyRow-field1209062685357763';
     const cgPhoneValue = formatPhoneNumber(patient.careTakerPhone);
     await this.populateField(cgPhone, cgPhoneValue);
+    await sleep(400);
 
     const cgContact = '#CustomPropertyRow-field1206289516765366';
     await this.populateField(cgContact, patient.careTakerEmail);
+    await sleep(400);
 
     const diagnosis = '#CustomPropertyRow-field1206289516765370';
     await this.populateField(diagnosis, patient.diagnosis);
+    await sleep(400);
 
     const treatmentHospital = '#CustomPropertyRow-field1206289516765374';
     await this.populateField(treatmentHospital, patient.treatmentHospital);
-    await sleep(200);
+    await sleep(400);
 
     //Need to click outside of the last field to save the data
     await this.browser.click(focus);
