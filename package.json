@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "prepare": "husky",
-    "precommit": "concurrently -g -n \"eslint,test:unit,build\" -c \"#341BAB,#A6CC66,#3077C6\" \"bun run lint\" \"bun test unit\" \"bun run build\"",
     "main": "bun run scripts/index.ts",
+    "asana": "bunx tsx scripts/index.ts",
     "test": "bun test unit",
     "test:integration": "bun test integration",
     "test:all": "concurrently -g -n \"test:unit,test:integration\" -c \"#A6CC66,#A6CC66\" \"npm run test\" \"npm run test:integration\"",
@@ -28,14 +28,16 @@
     "husky": "^9.1.5",
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
+    "tsx": "^4.19.2",
     "typescript-eslint": "^8.2.0"
   },
   "peerDependencies": {
     "typescript": "^5.5.4"
   },
   "dependencies": {
+    "axios": "^1.7.9",
     "cheerio": "^1.0.0-rc.12",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.7",
     "node-cron": "^3.0.3",
     "playwright": "^1.46.1",
     "playwright-extra": "^4.3.6",
